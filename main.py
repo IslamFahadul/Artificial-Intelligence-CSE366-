@@ -1,7 +1,10 @@
+# library
 from pyvis.network import Network as G
 import networkx as nx
 # map<int, list>
 # node -> neighbour
+
+# static graph
 grap = {
     1: [2, 3],
     2: [4, 5],
@@ -11,6 +14,8 @@ grap = {
     6: [],
     7: [],
 }
+
+# dynamic graph
 # graph builder
 print("Build A Graph First")
 nodes = list(map(int, input("Enter The Nodes:").split()))
@@ -24,7 +29,8 @@ while True:
         break
     else:
         graph[lf].append(rg)
-print(graph)
+print(graph) 
+
 
 # bfs graph traversal
 def bfs_traverse(g, start):
@@ -41,7 +47,7 @@ def bfs_traverse(g, start):
                 visited.add(neighbour)
 
 # bfs_traverse(grap, 1)
-
+# 5
 # bfs_search
 def bfs_search(g, start, target):
     q = []
@@ -73,16 +79,27 @@ def bfs_search(g, start, target):
 start_node = int(input("Enter start node: "))
 target_node = int(input("Enter target node: "))
 search_result = bfs_search(graph, start_node, target_node)
+
+# 6 graph visualization
 g = G()
-for key in grap:
-    if key in search_result:
-        g.add_node(key, color="green")
-    else:
+# graph
+for key in graph:
         g.add_node(key)
-for key, val in grap.items():
+for key, val in graph.items():
     if val:
         for v in val:
             g.add_edge(key, v)
+
+# result
+# for key in graph:
+#     if key in search_result:
+#         g.add_node(key, color="green") # BFS SEARCH RESULT
+#     else:
+#         g.add_node(key)
+# for key, val in graph.items():
+#     if val:
+#         for v in val:
+#             g.add_edge(key, v)
             # print(key, v)
 
 g.show("basic.html")
