@@ -11,6 +11,21 @@ grap = {
     6: [],
     7: [],
 }
+# graph builder
+print("Build A Graph First")
+nodes = list(map(int, input("Enter The Nodes:").split()))
+print("Enter The Edges: (Tip: Assign None to both left and right vertices to denote there are no edges left)")
+graph = {}
+for n in nodes:
+    graph[n] = []
+while True:
+    lf, rg = list(map(int, input("There is an edge between:").split()))
+    if lf == -1 and rg == -1:
+        break
+    else:
+        graph[lf].append(rg)
+print(graph)
+
 # bfs graph traversal
 def bfs_traverse(g, start):
     q = []
@@ -57,7 +72,7 @@ def bfs_search(g, start, target):
     return path
 start_node = int(input("Enter start node: "))
 target_node = int(input("Enter target node: "))
-search_result = bfs_search(grap, start_node, target_node)
+search_result = bfs_search(graph, start_node, target_node)
 g = G()
 for key in grap:
     if key in search_result:
