@@ -12,9 +12,9 @@ pygame.init()
 screen = pygame.display.set_mode( (WIDTH, HEIGHT) )
 pygame.display.set_caption('TIC TAC TOE AI')
 screen.fill( BG_COLOR )
-
+font = pygame.font.SysFont('Garamond', 30)
 # --- CLASSES ---
-
+gcount = 0
 class Board:
 
     def __init__(self):
@@ -37,6 +37,8 @@ class Board:
                     iPos = (col * SQSIZE + SQSIZE // 2, 20)
                     fPos = (col * SQSIZE + SQSIZE // 2, HEIGHT - 20)
                     pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)
+                    # screen.blit(font.render(f'AI wins the match!', False, (200,200,200)), (200, 200))
+                    # pygame.display.update()
                 return self.squares[0][col]
 
         # horizontal wins
@@ -47,6 +49,8 @@ class Board:
                     iPos = (20, row * SQSIZE + SQSIZE // 2)
                     fPos = (WIDTH - 20, row * SQSIZE + SQSIZE // 2)
                     pygame.draw.line(screen, color, iPos, fPos, LINE_WIDTH)
+                    # screen.blit(font.render(f'AI wins the match!', False, (200,200,200)), (200, 200))
+                    # pygame.display.update()
                 return self.squares[row][0]
 
         # desc diagonal
@@ -56,6 +60,8 @@ class Board:
                 iPos = (20, 20)
                 fPos = (WIDTH - 20, HEIGHT - 20)
                 pygame.draw.line(screen, color, iPos, fPos, CROSS_WIDTH)
+                # screen.blit(font.render(f'AI wins the match!', False, (200,200,200)), (200, 200))
+                # pygame.display.update()
             return self.squares[1][1]
 
         # asc diagonal
@@ -65,8 +71,9 @@ class Board:
                 iPos = (20, HEIGHT - 20)
                 fPos = (WIDTH - 20, 20)
                 pygame.draw.line(screen, color, iPos, fPos, CROSS_WIDTH)
+                # screen.blit(font.render(f'AI wins the match!', False, (200,200,200)), (200, 200))
+                # pygame.display.update()
             return self.squares[1][1]
-
         # no win yet
         return 0
 
@@ -165,9 +172,26 @@ class AI:
         else:
             # minimax algo choice
             eval, move = self.minimax(main_board, False)
-
+        
         print(f'AI has chosen to mark the square in pos {move} with an eval of: {eval}')
-
+        global gcount
+        if eval == -1:
+            screen.blit(font.render(f'AI wins the match!', False, (210,31,60)), (200, 200))
+            screen.blit(font.render(f'Press r to Restart', False, (215,252,0)), (200, 200-50))
+            pygame.display.update()
+            print('AI wins')
+        elif eval == 1:
+            screen.blit(font.render(f'Human wins the match!', False, (210,31,60)), (200, 200))
+            screen.blit(font.render(f'Press r to Restart', False, (215,252,0)), (200, 200-50))
+            pygame.display.update()
+            print('Human wins')
+        elif eval == 0:
+            gcount += 1
+        if gcount > 3:
+            screen.blit(font.render(f'Draw!', False, (210,31,60)), (WIDTH//2 - 10, HEIGHT//2 - 10))
+            screen.blit(font.render(f'Press r to Restart', False, (215,252,0)), (200, 200-50))
+            pygame.display.update()
+            print('Draw')
         return move # row, col
 
 class Game:
@@ -228,6 +252,8 @@ class Game:
         return self.board.final_state(show=True) != 0 or self.board.isfull()
 
     def reset(self):
+        global gcount
+        gcount = 0
         self.__init__()
 
 def main():
